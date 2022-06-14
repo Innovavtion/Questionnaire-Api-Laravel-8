@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Polls;
 use App\Models\Questions;
 use App\Models\VariantAnswers;
+use App\Models\Answers;
 
 use App\Http\Controllers\Api\QuestionsController;
 
@@ -17,19 +18,26 @@ use App\Http\Resources\VariantAnswersResource;
 
 use App\Http\Requests\PollsStoreRequest;
 
-class PollsController extends Controller
+class AnswersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    //Получение данных из модели PollsResource, который формирует нам удобный массив данных
     public function index()
     {
-        $polls = PollsResource::collection(Polls::all());
+        return Answers::all();
+    }
 
-        return $polls;
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+
     }
 
     /**
@@ -38,20 +46,15 @@ class PollsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    //Добавление данных в массив
     public function store(Request $request)
     {
-        $questions_add = new QuestionsController;
-
-        $created_polls = Polls::create([
-            'id_who_created' => $request->id_who_created,
-            'name_poll' => 'Новый опрос',
-            'description_poll' => '',
+        $create_answers = Answers::create([
+            'id_user' => $request->id_user,
+            'id_question' => $request->id_question,
+            'value' => $request->value,
         ]);
 
-        $questions_add->store($created_polls);
-
-        return new PollsResource($created_polls);
+        return $create_answers;
     }
 
     /**
@@ -60,12 +63,20 @@ class PollsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //Просмотр конретного опроса
     public function show($id)
     {
-       $polls = new PollsResource(Polls::with('questions')->findOrFail($id));
+        //
+    }
 
-       return $polls;
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -75,14 +86,16 @@ class PollsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //Обновление данных в опросе
-    public function update(PollsStoreRequest $request, $id)
+    public function update(Request $request, $id_answer)
     {
-        $polls = new PollsResource(Polls::with('questions')->findOrFail($id));
+        $update_answers = Answers::findOrFail($id_answer)->update([
+            'id' => $id_answer,
+            'id_user' => $request->id_user,
+            'id_question' => $request->id_question,
+            'value' => $request->value,
+        ]);
 
-        $polls->update($request->validated());
-
-        return $polls;
+        return $update_answers;
     }
 
     /**
@@ -91,12 +104,10 @@ class PollsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id_answer)
     {
-        $polls = new PollsResource(Polls::with('questions')->findOrFail($id));
+        $destroy_answers = Answers::findOrFail($id_answer)->destroy($id_answer);
 
-        $polls->destroy($id);
-
-        return $polls;
+        return $destroy_answers;
     }
 }

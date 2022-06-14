@@ -9,6 +9,7 @@ use \App\Http\Controllers\Api\PollsController;
 use \App\Http\Controllers\Api\QuestionsController;
 use \App\Http\Controllers\Api\VariantAnswersController;
 use \App\Http\Controllers\Api\UserController;
+use \App\Http\Controllers\Api\AnswersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,16 +21,6 @@ use \App\Http\Controllers\Api\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Route::apiResources([
-//     'polls' => PollsController::class,
-//     'polls/{poll}/questions' => QuestionsController::class,
-//     'polls/{poll}/questions/{question}/variant-answers' => VariantAnswersController::class,
-// ]);
 
 Route::get('/', function () {
    return 'Главная страница';
@@ -43,6 +34,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
         'polls' => PollsController::class,
         'polls/{poll}/questions' => QuestionsController::class,
         'polls/{poll}/questions/{question}/variant-answers' => VariantAnswersController::class,
+        'answers' => AnswersController::class,
         'users' => UserController::class
     ]);
 

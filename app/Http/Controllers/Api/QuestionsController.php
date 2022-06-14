@@ -26,13 +26,7 @@ class QuestionsController extends Controller
      */
     public function index(Request $request)
     {
-//         $request->validate([
-//             'polls_id' => 'required|integer|exists:polls,id'
-//         ]);
-//
-//         $questions = QuestionsResource::collection(Questions::where('polls_id', $request->polls_id)->get());
-//
-//         return $questions;
+
     }
 
     /**
@@ -43,9 +37,7 @@ class QuestionsController extends Controller
      */
     public function store(Polls $poll)
     {
-//         $create_question = Questions::create($request->validated());
-//
-//         return $create_question;
+
 
         $variant_answers_add = new VariantAnswersController;
 
@@ -69,12 +61,7 @@ class QuestionsController extends Controller
      */
     public function show(Polls $poll, Questions $question)
     {
-//         $id_poll = $poll->id;
-//         $id_question = $question->id;
-//
-//         $question = Questions::where('polls_id', $id_poll)->where('id', $id_question)->get()->makeHidden('polls_id');
-//
-//         return $question;
+
     }
 
     /**
@@ -86,17 +73,7 @@ class QuestionsController extends Controller
      */
     public function update(QuestionsStoreRequest $request, Polls $poll, Questions $question)
     {
-//         $polls_id = ['polls_id' => $poll->id];
-//
-//         $request = $request->toArray();
-//
-//         $request = array_merge($request, $polls_id);
-//
-//         $request = $request->get();
-//
-//         $request = new QuestionsResource($request);
 
-//         $request = $request . $polls_id;
 
         $question_update = new QuestionsResource(Questions::with('variantAnswers')->where('polls_id', $poll->id)->findOrFail($question->id));
 
